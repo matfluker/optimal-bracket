@@ -1,0 +1,56 @@
+[
+  {
+    "raw": "Iowa St.",
+    "canonical": "Iowa State",
+    "source": "manual",
+    "addedAt": "2026-03-17T02:58:51.800Z"
+  },
+  {
+    "raw": "Kennesaw St.",
+    "canonical": "Kennesaw State",
+    "source": "manual",
+    "addedAt": "2026-03-17T02:59:03.731Z"
+  },
+  {
+    "raw": "Michigan St.",
+    "canonical": "Michigan State",
+    "source": "manual",
+    "addedAt": "2026-03-17T02:59:09.716Z"
+  },
+  {
+    "raw": "North Dakota St.",
+    "canonical": "North Dakota State",
+    "source": "manual",
+    "addedAt": "2026-03-17T02:59:15.545Z"
+  },
+  {
+    "raw": "Ohio St.",
+    "canonical": "Ohio State",
+    "source": "manual",
+    "addedAt": "2026-03-17T02:59:26.405Z"
+  },
+  {
+    "raw": "Tennessee St.",
+    "canonical": "Tennessee State",
+    "source": "manual",
+    "addedAt": "2026-03-17T02:59:32.616Z"
+  },
+  {
+    "raw": "Utah St.",
+    "canonical": "Utah State",
+    "source": "manual",
+    "addedAt": "2026-03-17T03:00:06.368Z"
+  },
+  {
+    "raw": "Wright St.",
+    "canonical": "Wright State",
+    "source": "manual",
+    "addedAt": "2026-03-17T03:00:12.149Z"
+  },
+  {
+    "raw": "Texas/NC State",
+    "canonical": "Texas",
+    "source": "manual",
+    "addedAt": "2026-03-17T03:00:19.295Z"
+  }
+]
