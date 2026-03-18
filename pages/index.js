@@ -85,13 +85,18 @@ export default function Home() {
           {/* ── Methodology blurb ────────────────────────────── */}
           <section className="methodology">
             <p>
-              Picking the same teams as everyone else is a losing strategy. If a popular team wins,
-              the whole pool scores those points and you go nowhere. The Optimal Bracket looks for
-              teams that the data likes but the public is sleeping on. We take what the analytics
-              models say about each team's chances and compare it to how often people are actually
-              picking them on Yahoo. The bigger that gap, the more you stand to gain by picking them.
-              We call that gap <strong>leverage</strong>.
+              In a bracket pool, the goal is to finish with more points than everyone else. That is
+              not the same as picking the most correct teams. When you pick a popular favorite and
+              they win, most of your pool scores those points too. A pick can be correct and still do
+              very little for your standing.
             </p>
+            <p>
+              The Optimal Bracket measures the gap between what the analytics models say a team will
+              do and how often people are actually picking them. The bigger that gap, the more you
+              stand to gain when that team wins.{' '}
+            </p>
+            <p><a href="/how-it-works" className="methodology-link">Learn how this works →</a></p>
+
           </section>
 
           {/* ── Legend ───────────────────────────────────────── */}
@@ -127,6 +132,7 @@ export default function Home() {
           {/* ── Bracket ──────────────────────────────────────── */}
           {!loading && (siteData?.state === 'active' || siteData?.state === 'frozen') && (
             <>
+              <ValueSpotlight tooltips={currentTooltips} />
               <Controls settings={settings} onChange={setSettings} />
 
               {siteData.state === 'frozen' && (
@@ -153,6 +159,61 @@ export default function Home() {
 
       </div>
     </>
+  )
+}
+
+const ROUND_LABELS = { r1: 'R64', r2: 'R32', r3: 'S16', r4: 'E8', r5: 'F4', r6: 'NCG' }
+
+function dedupeByTeam(entries, gapFn) {
+  const best = {}
+  for (const t of entries) {
+    const g = gapFn(t)
+    if (g > 5 && (best[t.team] == null || g > gapFn(best[t.team]))) {
+      best[t.team] = t
+    }
+  }
+  return Object.values(best).sort((a, b) => (b.leverageValue ?? 0) - (a.leverageValue ?? 0)).slice(0, 3)
+}
+
+function ValueSpotlight({ tooltips }) {
+  if (!tooltips) return null
+
+  const entries = Object.values(tooltips).filter(
+    t => t.projectionPct != null && t.publicPct != null
+  )
+
+  const undervalued = dedupeByTeam(entries, t => t.projectionPct - t.publicPct)
+  const overvalued  = dedupeByTeam(entries, t => t.publicPct - t.projectionPct)
+
+  if (undervalued.length === 0 && overvalued.length === 0) return null
+
+  return (
+    <div className="value-spotlight">
+      <div className="value-spotlight-col value-spotlight-col--under">
+        <div className="value-spotlight-heading">Most Undervalued</div>
+        {undervalued.map(t => (
+          <div key={t.team} className="value-spotlight-row">
+            <span className="value-spotlight-name">{t.team}</span>
+            <span className="value-spotlight-stats">
+              {ROUND_LABELS[t.round] || t.round} &middot; {t.projectionPct}% model / {t.publicPct}% public
+            </span>
+            <span className="value-spotlight-gap">{t.leverageValue != null ? `${t.leverageValue.toFixed(1)}pts` : '—'}</span>
+          </div>
+        ))}
+      </div>
+      <div className="value-spotlight-col value-spotlight-col--over">
+        <div className="value-spotlight-heading">Most Overvalued</div>
+        {overvalued.map(t => (
+          <div key={t.team} className="value-spotlight-row">
+            <span className="value-spotlight-name">{t.team}</span>
+            <span className="value-spotlight-stats">
+              {ROUND_LABELS[t.round] || t.round} &middot; {t.projectionPct}% model / {t.publicPct}% public
+            </span>
+            <span className="value-spotlight-gap">{t.leverageValue != null ? `${t.leverageValue.toFixed(1)}pts` : '—'}</span>
+          </div>
+        ))}
+      </div>
+    </div>
   )
 }
 

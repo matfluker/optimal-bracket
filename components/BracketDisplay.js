@@ -455,8 +455,8 @@ function MobileTeamRow({ team, isWinner }) {
 
 function Tooltip({ tooltip }) {
   const { displayName, roundKey, signalLine, projectionPct, publicPct,
-          pointsIfCorrect, pickValue,
-          opponent, opponentProjectionPct, opponentPublicPct, opponentPickValue, pickEdge,
+          pointsIfCorrect, leverageValue, pickValue,
+          opponent, opponentProjectionPct, opponentPublicPct, opponentLeverageValue, opponentPickValue, pickEdge,
           differentiationLine } = tooltip
 
   return (
@@ -492,8 +492,13 @@ function Tooltip({ tooltip }) {
               <span className="tt-comparison-val">{opponentPublicPct != null ? `${opponentPublicPct}%` : '—'}</span>
             </div>
             <div className="tt-comparison-row">
-              <span className="tt-comparison-val">{pickValue != null ? `${pickValue.toFixed(1)}pts` : '—'}</span>
+              <span className="tt-comparison-val">{leverageValue != null ? `${leverageValue.toFixed(1)}pts` : '—'}</span>
               <span className="tt-comparison-label">Pick value</span>
+              <span className="tt-comparison-val">{opponentLeverageValue != null ? `${opponentLeverageValue.toFixed(1)}pts` : '—'}</span>
+            </div>
+            <div className="tt-comparison-row">
+              <span className="tt-comparison-val">{pickValue != null ? `${pickValue.toFixed(1)}pts` : '—'}</span>
+              <span className="tt-comparison-label">Blended Score</span>
               <span className="tt-comparison-val">{opponentPickValue != null ? `${opponentPickValue.toFixed(1)}pts` : '—'}</span>
             </div>
           </div>
@@ -502,8 +507,8 @@ function Tooltip({ tooltip }) {
           {pickEdge != null && (
             <div className={`tt-pick-edge ${pickEdge >= 0 ? 'positive' : 'negative'}`}>
               {pickEdge >= 0
-                ? `+${pickEdge.toFixed(1)}pts edge over picking ${opponent}`
-                : `${pickEdge.toFixed(1)}pts — ${opponent} had more leverage`
+                ? `+${pickEdge.toFixed(1)} Blended Score edge over ${opponent}`
+                : `${pickEdge.toFixed(1)} Blended Score — ${opponent} scores higher`
               }
             </div>
           )}
